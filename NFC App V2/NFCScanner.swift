@@ -1,46 +1,41 @@
+// NFCScanner.swift
 
 import Foundation
 import CoreNFC
 
-/// A simple ObservableObject that manages an NFCNDEFReaderSession
+/// Simple NFCNDEFReaderSession manager with no pop-up alerts
 final class NFCScanner: NSObject, ObservableObject, NFCNDEFReaderSessionDelegate {
     @Published var scannedMessages: [String] = []
-    @Published var isAlertPresented = false
-
-    /// Title & message for the alert
-    var alertTitle = ""
-    var alertMessage = ""
 
     private var session: NFCNDEFReaderSession?
 
-    /// Call this to start a new NFC‐scanning session
+    /// Start a new NFC scan session
     func beginScanning() {
         guard NFCNDEFReaderSession.readingAvailable else {
-            showAlert(title: "NFC not supported", message: "This device doesn’t support NFC scanning.")
+            // silently fail if NFC not supported
             return
         }
-        // Invalidate after first read so you get fresh data each time
         session = NFCNDEFReaderSession(
             delegate: self,
             queue: nil,
             invalidateAfterFirstRead: true
         )
-        session?.alertMessage = "Hold your iPhone near the NFC tag."
+        session?.alertMessage = "Hold iPhone near tag"
         session?.begin()
     }
 
     // MARK: - NFCNDEFReaderSessionDelegate
 
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        showAlert(title: "Session Ended", message: error.localizedDescription)
+        // no-op: ignore session invalidation
     }
 
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
         for message in messages {
             for record in message.records {
                 let payloadString: String
-                // Try UTF-8 decode, otherwise hex
-                if let str = String(data: record.payload, encoding: .utf8), !str.isEmpty {
+                if let str = String(data: record.payload, encoding: .utf8),
+                   !str.isEmpty {
                     payloadString = str
                 } else {
                     payloadString = record.payload.map {
@@ -51,16 +46,6 @@ final class NFCScanner: NSObject, ObservableObject, NFCNDEFReaderSessionDelegate
                     self.scannedMessages.append(payloadString)
                 }
             }
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func showAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            self.alertTitle = title
-            self.alertMessage = message
-            self.isAlertPresented = true
         }
     }
 }

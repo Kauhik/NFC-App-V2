@@ -25,11 +25,6 @@ struct ContentView: View {
                     }
                 }
             }
-            .alert(scanner.alertTitle, isPresented: $scanner.isAlertPresented) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(scanner.alertMessage)
-            }
         }
     }
 }

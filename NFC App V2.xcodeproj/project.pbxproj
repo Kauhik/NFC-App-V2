@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		80ED3FCC2E24E0D400B3CA32 /* NFCScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80ED3FCB2E24E0D400B3CA32 /* NFCScanner.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		80ED3FAF2E24DEB500B3CA32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -31,7 +27,6 @@
 		80ED3F9C2E24DEB400B3CA32 /* NFC App V2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NFC App V2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80ED3FAE2E24DEB500B3CA32 /* NFC App V2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NFC App V2Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80ED3FB82E24DEB500B3CA32 /* NFC App V2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NFC App V2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80ED3FCB2E24E0D400B3CA32 /* NFCScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCScanner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,7 +75,6 @@
 		80ED3F932E24DEB400B3CA32 = {
 			isa = PBXGroup;
 			children = (
-				80ED3FCB2E24E0D400B3CA32 /* NFCScanner.swift */,
 				80ED3F9E2E24DEB400B3CA32 /* NFC App V2 */,
 				80ED3FB12E24DEB500B3CA32 /* NFC App V2Tests */,
 				80ED3FBB2E24DEB500B3CA32 /* NFC App V2UITests */,
@@ -242,7 +236,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80ED3FCC2E24E0D400B3CA32 /* NFCScanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
