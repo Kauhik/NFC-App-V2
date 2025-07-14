@@ -1,61 +1,35 @@
-//
-//  ContentView.swift
-//  NFC App V2
-//
-//  Created by Kaushik Manian on 14/7/25.
-//
+// ContentView.swift
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @StateObject private var scanner = NFCScanner()
 
     var body: some View {
-        NavigationSplitView {
+        NavigationView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                if scanner.scannedMessages.isEmpty {
+                    Text("No tags scanned yet")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(scanner.scannedMessages, id: \.self) { msg in
+                        Text(msg)
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
+            .navigationTitle("NFC Scanner")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                    Button("Scan NFC") {
+                        scanner.beginScanning()
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+            .alert(scanner.alertTitle, isPresented: $scanner.isAlertPresented) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(scanner.alertMessage)
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
